@@ -32,6 +32,6 @@
 *.app
 
 #Directories
-.vs
+.vscode
 output
 logs
