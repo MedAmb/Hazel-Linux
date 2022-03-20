@@ -1,4 +1,4 @@
-#include "Hazel.h"
+#include "Pub/Hazel.h"
 
 class sandBox: public Hazel::Application
 {
