@@ -1,65 +1,52 @@
 #=============================================
+# TOP LEVEL MAKEFILE
+#=============================================
+export
+#=============================================
 # CMD VARIABLES
 #=============================================
 D = 1
+#==============================================
+# DIRECTORY VARIABLES
+#==============================================
+unexport THISDIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
+SRCDIR = $(THISDIR)src
 
 #==============================================
-# DIRECTORY STRUCTURE VARIABLES
+# TARGETS
 #==============================================
-THISDIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-BINOUTPUTDIR = $(THISDIR)output/bin-release
-LIBOUTPUTDIR = $(THISDIR)output/lib-release
-INTERMEDIATEDIR = $(THISDIR)intermediate
-HAZELSRCDIR = $(THISDIR)src/Hazel
-APPSRCDIR = $(THISDIR)src/Application
-INCDIR = $(THISDIR)inc
-HAZELINCDIR = $(INCDIR)/Hazel
+all: dependencies Application
+	
+dependencies: ThirdParty Hazel
+	$(MAKE) -C $(SRCDIR)/ThirdParty install
+	$(MAKE) -C $(SRCDIR)/Hazel install
 
-#==============================================
-# COMPILATION FLAGS  VARIABLES
-#==============================================
-CC = g++
-STDCFLAGS = -std=c++17
-SHAREDLIBFFLAGS = -fPIC
-OPTIMAZATIONFLAGS = -O2
-LDFLAGS = -lHazel
+Hazel:
+	$(MAKE) -C $(SRCDIR)/Hazel all
 
-ifneq ($(D), 0)
-OPTIMAZATIONFLAGS = -g
-BINOUTPUTDIR = $(THISDIR)output/bin-debug
-LIBOUTPUTDIR = $(THISDIR)output/lib-debug
-endif
+ThirdParty:
+	$(MAKE) -C $(SRCDIR)/ThirdParty all
 
-all: build-lib install build-bin
-
-#==============================================
-# HAZEL LIB SPECIFIC
-#==============================================
-
-HAZELOBJS = Application.o
-
-build-lib:$(HAZELOBJS)
-	$(CC) -shared -o $(LIBOUTPUTDIR)/libHazel.so $(INTERMEDIATEDIR)/*.o $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(HAZELINCDIR)
-
-Application.o:
-	$(CC) -c $(HAZELSRCDIR)/Application.cpp -o $(INTERMEDIATEDIR)/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(HAZELINCDIR)
-
-#==============================================
-# APP SPECIFIC
-#==============================================
-
-build-bin:
-	$(CC) -o $(BINOUTPUTDIR)/HazelSandBox.out $(APPSRCDIR)/SandBox.cpp $(STDCFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) $(LDFLAGS)
-
-#==============================================
-# COMMON
-#==============================================
+Application:
+	$(MAKE) -C $(SRCDIR)/Application all
 
 install:
-	sudo cp $(LIBOUTPUTDIR)/libHazel.so /usr/lib/libHazel.so
+	$(MAKE) -C $(SRCDIR)/ThirdParty install
+	$(MAKE) -C $(SRCDIR)/Hazel install
+	$(MAKE) -C $(SRCDIR)/Application install
+
+clobber:
+	$(MAKE) -C $(SRCDIR)/ThirdParty clobber
+	$(MAKE) -C $(SRCDIR)/Hazel clobber
+	$(MAKE) -C $(SRCDIR)/Application clobber
+	-rm -rf logs
+
+uninstall:
+	$(MAKE) -C $(SRCDIR)/ThirdParty uninstall
+	$(MAKE) -C $(SRCDIR)/Hazel uninstall
+	$(MAKE) -C $(SRCDIR)/Application uninstall
 
 clean:
-	rm $(INTERMEDIATEDIR)/*
-	rm $(BINOUTPUTDIR)/*
-	rm $(LIBOUTPUTDIR)/*
-	sudo rm /usr/lib/libHazel.so
+	$(MAKE) -C $(SRCDIR)/ThirdParty clean
+	$(MAKE) -C $(SRCDIR)/Hazel clean
+	$(MAKE) -C $(SRCDIR)/Application clean
