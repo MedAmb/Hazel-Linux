@@ -37,12 +37,13 @@ DEFINEFLAGS = -DSPDLOG_COMPILED_LIB
 #==============================================
 # TARGETS
 #==============================================
-all:libspdlog.so
+all:dirs libspdlog.so
 
 #==============================================
 # SHARED LIBRARY
 #==============================================
 libspdlog.so:$(SPDLOGOBJS)
+	mkdir $(LIBOUTPUTDIR)
 	$(CC) -shared -o $(LIBOUTPUTDIR)/$@ intermediate/*.o $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(THIRDPARTYINCDIR) $(DEFINEFLAGS)
 
 #==============================================
@@ -72,6 +73,8 @@ stdout_sink.o:
 #==============================================
 # PHONIES
 #==============================================
+dirs:
+	mkdir intermediate
 install:
 	sudo cp $(LIBOUTPUTDIR)/libspdlog.so /usr/lib/libspdlog.so
 

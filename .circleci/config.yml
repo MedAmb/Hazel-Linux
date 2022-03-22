@@ -1,15 +1,15 @@
 version: 2.1
 jobs:
-  say-hello:
+  BUILD:
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
       - run:
           name: "Build"
-          command: "make all"
+          command: "make all D=0"
 
 workflows:
   say-hello-workflow:
     jobs:
-      - say-hello
+      - BUILD
