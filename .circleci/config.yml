@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: "Build"
-          command: "make all D=0 CI=0"
+          command: "make all D=0 CI=1"
 
 workflows:
   say-hello-workflow:
