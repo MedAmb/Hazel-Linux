@@ -15,7 +15,7 @@ jobs:
       - checkout
       - run:
           name: "RUN"
-          command: "make install && Sandbox.out"
+          command: "make install D=0 && Sandbox.out"
 
 workflows:
   say-hello-workflow:
