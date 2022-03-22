@@ -20,6 +20,6 @@ genFolder:
 	mkdir ../output
 	mkdir $(BINOUTPUTDIR)
 	mkdir $(LIBOUTPUTDIR)
-	mkdir $(SRCDIR)/Application/intermediate
-	mkdir $(SRCDIR)/ThirdParty/spdlog/intermediate
-	mkdir $(SRCDIR)/Hazel/intermediate
+	mkdir ../src/Application/intermediate
+	mkdir ../src/ThirdParty/spdlog/intermediate
+	mkdir ../src/Hazel/intermediate
