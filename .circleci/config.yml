@@ -21,4 +21,6 @@ workflows:
   say-hello-workflow:
     jobs:
       - BUILD
-      - RUN
+      - RUN:
+          requires:
+            - BUILD
