@@ -8,8 +8,17 @@ jobs:
       - run:
           name: "Build"
           command: "make all D=0 CI=1"
+  RUN:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "RUN"
+          command: "output/bin-release/Sandbox.out"
 
 workflows:
   say-hello-workflow:
     jobs:
       - BUILD
+      - RUN
