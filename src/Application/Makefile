@@ -39,7 +39,6 @@ all:Sandbox.out
 # BINARY
 #==============================================
 Sandbox.out:
-	mkdir $(BINOUTPUTDIR)
 	$(CC) -o $(BINOUTPUTDIR)/$@ SandBox.cpp $(STDCFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/ThirdParty $(LDFLAGS)
 
 #==============================================

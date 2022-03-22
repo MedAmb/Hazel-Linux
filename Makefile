@@ -6,16 +6,25 @@ export
 # CMD VARIABLES
 #=============================================
 D = 1
+CI = 0
 #==============================================
 # DIRECTORY VARIABLES
 #==============================================
 unexport THISDIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 SRCDIR = $(THISDIR)src
 
+ifeq ($(CI), 1)
+CICONFIG = $(MAKE) -C .circleci genFolder
+endif
+
 #==============================================
 # TARGETS
 #==============================================
-all: dependencies Application
+all: dirs dependencies Application
+
+dirs:
+	$(CICONFIG)
+
 	
 dependencies: ThirdParty Hazel
 	$(MAKE) -C $(SRCDIR)/ThirdParty install

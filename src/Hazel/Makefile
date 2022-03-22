@@ -37,13 +37,12 @@ HAZELOBJS = Application.o Log.o
 #==============================================
 # TARGETS
 #==============================================
-all:dirs libHazel.so
+all:libHazel.so
 
 #==============================================
 # SHARED LIBRARY
 #==============================================
 libHazel.so:$(HAZELOBJS)
-	mkdir $(LIBOUTPUTDIR)
 	$(CC) -shared -o $(LIBOUTPUTDIR)/$@ intermediate/* $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel  -I $(THIRDPARTYINCDIR) $(DEBUGDEFINE)
 
 #==============================================
@@ -58,14 +57,12 @@ Log.o:
 #==============================================
 # PHONIES
 #==============================================
-dirs:
-	mkdir intermediate
-
 install:
 	sudo cp $(LIBOUTPUTDIR)/libHazel.so /usr/lib/libHazel.so
 
 clobber: uninstall clean
 	-rm $(LIBOUTPUTDIR)/libHazel.so
+	-rm -rf intermediate
 	
 uninstall:
 	-sudo rm /usr/lib/libHazel.so
