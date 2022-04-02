@@ -1,4 +1,11 @@
 
+all:$(OBJFILES)
+
+%.o:%.c
+	gcc $(CFLAGS) $(DEFINEFLAGS) $(INCLUDEFLAGS) -o $@ -c $^
+
+
+
 #=============================================
 # CMD VARIABLES
 #=============================================
@@ -10,17 +17,17 @@ THISDIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 BINOUTPUTDIR = $(THISDIR)../../../output/bin-debug
 LIBOUTPUTDIR = $(THISDIR)../../../output/lib-debug
 INTERMEDIATEDIR =  $(THISDIR)intermediate
-INCDIR = $(THISDIR)../../../inc
-THIRDPARTYINCDIR = $(INCDIR)/ThirdParty
+INCDIR = $(THISDIR)../../../inc/ThirdParty/glfw
 
 #==============================================
 # COMPILATION FLAGS  VARIABLES
 #==============================================
-CC = g++
-STDCFLAGS = -std=c++11
+CC = gcc
+STDCFLAGS = -Wall -fvisibility=hidden -std=gnu99
 SHAREDLIBFFLAGS = -fPIC
 OPTIMAZATIONFLAGS = -g
-DEFINEFLAGS = -DSPDLOG_COMPILED_LIB
+DEFINEFLAGS = -D_GLFW_USE_CONFIG_H -Dglfw_EXPORTS
+LDFLAGS = /usr/lib/x86_64-linux-gnu/librt.so -lm -ldl /usr/lib/x86_64-linux-gnu/libX11.so -lpthread
 
 #==============================================
 # CONDITIONAL ASSIGNEMENT
@@ -34,37 +41,37 @@ endif
 #==============================================
 # FILES
 #==============================================
-SPDLOGSRC = $(wildcard *.cpp)
-SPDLOGOBJS = $(SPDLOGSRC:.cpp=.o)
+SRCFILES = $(wildcard *.c)
+OBJFILES = $(SRCFILES:.c=.o)
 
 #==============================================
 # TARGETS
 #==============================================
-build:libspdlog.so
+build:libglfw.so
 
 #==============================================
 # SHARED LIBRARY
 #==============================================
-libspdlog.so:$(SPDLOGOBJS)
-	$(CC) -shared -o $(LIBOUTPUTDIR)/$@ intermediate/*.o $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(THIRDPARTYINCDIR) $(DEFINEFLAGS)
+libglfw.so:$(OBJFILES)
+	$(CC) -shared -o $(LIBOUTPUTDIR)/$@ intermediate/*.o $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) $(DEFINEFLAGS) $(LDFLAGS)
 
 #==============================================
 # OBJECT FILES
 #==============================================
-%.o:%.cpp
-	$(CC) -c $^ -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(THIRDPARTYINCDIR) $(DEFINEFLAGS)
+%.o:%.c
+	$(CC) -c $^ -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) $(DEFINEFLAGS)
 
 #==============================================
 # PHONIES
 #==============================================
 install:
-	sudo cp $(LIBOUTPUTDIR)/libspdlog.so /usr/lib/libspdlog.so
+	sudo cp $(LIBOUTPUTDIR)/libglfw.so /usr/lib/libglfw.so
 
 clobber: uninstall clean
-	-rm $(LIBOUTPUTDIR)/libspdlog.so
+	-rm $(LIBOUTPUTDIR)/libglfw.so
 
 uninstall:
-	-sudo rm /usr/lib/libspdlog.so
+	-sudo rm /usr/lib/libglfw.so
 
 clean:
 	-rm intermediate/*.o

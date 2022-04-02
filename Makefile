@@ -16,49 +16,99 @@ SRCDIR = $(THISDIR)src
 #==============================================
 # TARGETS
 #==============================================
-.PHONY : all dependencies Hazel ThirdParty Application install uninstall clean clobber
+.PHONY : all Hazel ThirdParty Application install uninstall clean clobber
 
-all: dependencies Application
+all: PCH-build ThirdParty Hazel Application
 
-
-dependencies: ThirdParty Hazel
-	@echo "Installing Shared libraries"
-	$(MAKE) -C $(SRCDIR)/ThirdParty install
-	$(MAKE) -C $(SRCDIR)/Hazel install
-
-Hazel:
-	@echo "Building the Hazel engine"
-	$(MAKE) -C $(SRCDIR)/Hazel all
-
-ThirdParty:
-	@echo "Building third party dependencies"
-	$(MAKE) -C $(SRCDIR)/ThirdParty all
-
-Application:
-	@echo "Building the Application"
-	$(MAKE) -C $(SRCDIR)/Application all
-
-PCH:
+#==============================================
+# TARGETS Precompiled Headers
+#==============================================
+PCH-build:
 	$(MAKE) -C $(PCHDIR) build
 
-install:
-	$(MAKE) -C $(SRCDIR)/ThirdParty install
+#==============================================
+# TARGETS Third Party software
+#==============================================
+ThirdParty: ThirdParty-build ThirdParty-install
+
+ThirdParty-build: spldlog-build glfw-build
+
+ThirdParty-install: spldlog-install glfw-install
+
+spldlog-build:
+	$(MAKE) -C $(SRCDIR)/ThirdParty spdlog-build
+
+spldlog-install:
+	$(MAKE) -C $(SRCDIR)/ThirdParty spdlog-install
+
+glfw-build:
+	$(MAKE) -C $(SRCDIR)/ThirdParty glfw-build
+
+glfw-install:
+	$(MAKE) -C $(SRCDIR)/ThirdParty glfw-install
+
+#==============================================
+# TARGETS Hazel
+#==============================================
+Hazel: Hazel-build Hazel-install
+	$(MAKE) -C $(SRCDIR)/Hazel 
+
+Hazel-build:
+	$(MAKE) -C $(SRCDIR)/Hazel build
+
+Hazel-install:
 	$(MAKE) -C $(SRCDIR)/Hazel install
+
+#==============================================
+# TARGETS Application
+#==============================================
+Application: Application-build Application-install
+
+Application-build:
+	$(MAKE) -C $(SRCDIR)/Application build
+
+Application-install:
 	$(MAKE) -C $(SRCDIR)/Application install
+	
 
-uninstall:
-	$(MAKE) -C $(SRCDIR)/ThirdParty uninstall
+#==============================================
+# TARGETS uninstallation
+#==============================================
+uninstall: ThirdParty-uninstall Hazel-uninstall Application-uninstall
+
+ThirdParty-uninstall: spdlog-uninstall glfw-uninstall
+
+spdlog-uninstall:
+	$(MAKE) -C $(SRCDIR)/ThirdParty spdlog-uninstall
+
+glfw-uninstall:
+	$(MAKE) -C $(SRCDIR)/ThirdParty glfw-uninstall
+
+Hazel-uninstall:
 	$(MAKE) -C $(SRCDIR)/Hazel uninstall
+
+Application-uninstall:
 	$(MAKE) -C $(SRCDIR)/Application uninstall
-
-clean:
-	$(MAKE) -C $(SRCDIR)/ThirdParty clean
-	$(MAKE) -C $(SRCDIR)/Hazel clean
-	$(MAKE) -C $(SRCDIR)/Application clean
-
-clobber:
-	$(MAKE) -C $(SRCDIR)/ThirdParty clobber
-	$(MAKE) -C $(SRCDIR)/Hazel clobber
-	$(MAKE) -C $(SRCDIR)/Application clobber
-	$(MAKE) -C $(PCHDIR) clean
+	
+#==============================================
+# TARGETS cleaning
+#==============================================	
+clobber:PCH-clobber ThirdParty-clobber Hazel-clobber Application-clobber
 	-rm -rf logs
+
+PCH-clobber:
+	$(MAKE) -C $(PCHDIR) clobber
+
+ThirdParty-clobber: spdlog-clobber glfw-clobber
+
+spdlog-clobber:
+	$(MAKE) -C $(SRCDIR)/ThirdParty spdlog-clobber
+
+glfw-clobber:
+	$(MAKE) -C $(SRCDIR)/ThirdParty glfw-clobber
+
+Hazel-clobber:
+	$(MAKE) -C $(SRCDIR)/Hazel clobber
+
+Application-clobber:
+	$(MAKE) -C $(SRCDIR)/Application clobber

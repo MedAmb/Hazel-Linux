@@ -19,12 +19,14 @@ CC = g++
 STDCFLAGS = -std=c++17
 SHAREDLIBFFLAGS = -fPIC
 OPTIMAZATIONFLAGS = -g
-LDFLAGS = -lHazel -lspdlog -lpthread
+LDFLAGS = -lHazel -lglfw  -lm
+DEBUGDEFINE = -DDEBUG
 
 #==============================================
 # FILES
 #==============================================
-SRC = $(wildcard *.cpp)
+SRCFILES = $(wildcard *.cpp)
+OBJECTFILES = $(SRCFILES:.cpp=.o)
 
 #==============================================
 # CONDITIONAL ASSIGNEMENT
@@ -33,31 +35,30 @@ ifeq ($(D), 0)
 OPTIMAZATIONFLAGS = -O2
 BINOUTPUTDIR = $(THISDIR)../../output/bin-release
 LIBOUTPUTDIR = $(THISDIR)../../output/lib-release
+DEBUGDEFINE =
 endif
 
 #==============================================
 # TARGETS
 #==============================================
-all:Sandbox.out
+build:$(OBJECTFILES)
+	$(CC) -o $(BINOUTPUTDIR)/Sandbox $(INTERMEDIATEDIR)/*.o $(STDCFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/PCH -I $(INCDIR)/ThirdParty $(LDFLAGS) $(DEBUGDEFINE)
 
 #==============================================
 # BINARY
 #==============================================
-Sandbox.out:$(SRC)
-	$(CC) -o $(BINOUTPUTDIR)/$@ $^ $(STDCFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/PCH -I $(INCDIR)/ThirdParty $(LDFLAGS)
+%.o:%.cpp
+	$(CC) -o $(INTERMEDIATEDIR)/$@ -c $^ $(STDCFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/PCH -I $(INCDIR)/ThirdParty -I $(INCDIR)/ThirdParty/glfw $(DEBUGDEFINE)
 
 #==============================================
 # PHONIES
 #==============================================
-
 install:
-	sudo cp $(BINOUTPUTDIR)/Sandbox.out /usr/bin/Sandbox.out
+	sudo cp $(BINOUTPUTDIR)/Sandbox /usr/bin/Sandbox
 
-clobber: uninstall clean
-	-rm $(BINOUTPUTDIR)/Sandbox.out
+clobber:
+	-rm $(INTERMEDIATEDIR)/*.o
+	-rm $(BINOUTPUTDIR)/Sandbox
 
 uninstall:
-	-sudo rm /usr/bin/Sandbox.out
-
-clean:
-	-rm intermediate/*.o
+	-sudo rm /usr/bin/Sandbox

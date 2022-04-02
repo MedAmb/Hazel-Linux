@@ -3,17 +3,26 @@ export D=1
 #==============================================
 # TARGETS FOR THIRD PARTY LIBRARIES
 #==============================================
-all:
-	$(MAKE) -C spdlog all
+spdlog-build:
+	$(MAKE) -C spdlog build
 
-install:
+spdlog-install:
 	$(MAKE) -C spdlog install
 
-clobber:
+spdlog-clobber:
 	$(MAKE) -C spdlog clobber
 
-uninstall:
+spdlog-uninstall:
 	$(MAKE) -C spdlog uninstall
 
-clean:
-	$(MAKE) -C spdlog clean
+glfw-build:
+	$(MAKE) -C glfw build
+
+glfw-install:
+	$(MAKE) -C glfw install
+
+glfw-clobber:
+	$(MAKE) -C glfw clobber
+
+glfw-uninstall:
+	$(MAKE) -C glfw uninstall

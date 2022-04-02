@@ -10,7 +10,6 @@ BINOUTPUTDIR = $(THISDIR)../../output/bin-debug
 LIBOUTPUTDIR = $(THISDIR)../../output/lib-debug
 INTERMEDIATEDIR =  $(THISDIR)intermediate
 INCDIR = $(THISDIR)../../inc
-THIRDPARTYINCDIR = $(INCDIR)/ThirdParty
 DEBUGDEFINE = -DDEBUG
 
 #==============================================
@@ -20,6 +19,7 @@ CC = g++
 STDCFLAGS = -std=c++17
 SHAREDLIBFFLAGS = -fPIC
 OPTIMAZATIONFLAGS = -g
+LDFLAGS = -lspdlog -lpthread
 
 #==============================================
 # CONDITIONAL ASSIGNEMENT
@@ -40,19 +40,19 @@ HAZELOBJS = $(HAZELSRC:.cpp=.o)
 #==============================================
 # TARGETS
 #==============================================
-all:libHazel.so
+build:libHazel.so
 
 #==============================================
 # SHARED LIBRARY
 #==============================================
 libHazel.so:$(HAZELOBJS)
-	$(CC) -shared -o $(LIBOUTPUTDIR)/$@ intermediate/* $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(INCDIR)/PCH  -I $(THIRDPARTYINCDIR) $(DEBUGDEFINE)
+	$(CC) -shared -o $(LIBOUTPUTDIR)/$@ intermediate/* $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) $(LDFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(INCDIR)/PCH  -I $(INCDIR)/ThirdParty -I $(THIRDPARTYINCDIR) $(DEBUGDEFINE)
 
 #==============================================
 # OBJECT FILES
 #==============================================
 %.o:%.cpp
-	$(CC) -c $^ -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(INCDIR)/PCH -I $(THIRDPARTYINCDIR) $(DEBUGDEFINE)
+	$(CC) -c $^ -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(INCDIR)/PCH -I $(INCDIR)/ThirdParty $(DEBUGDEFINE)
 
 #==============================================
 # PHONIES
@@ -60,13 +60,10 @@ libHazel.so:$(HAZELOBJS)
 install:
 	sudo cp $(LIBOUTPUTDIR)/libHazel.so /usr/lib/libHazel.so
 
-clobber: uninstall clean
+clobber:
 	-rm $(LIBOUTPUTDIR)/libHazel.so
-	-rm -rf intermediate
+	-rm -rf intermediate/*.o
 	
 uninstall:
 	-sudo rm /usr/lib/libHazel.so
-
-clean:
-	-rm intermediate/*.o
 

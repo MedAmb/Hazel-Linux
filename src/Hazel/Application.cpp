@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "Hazel/Log.h"
 
-
+int boing(void);
 namespace Hazel
 {
         Application::Application()
@@ -21,7 +21,6 @@ namespace Hazel
             {
                 HZ_CORE_WARN(e);
             }
-            while(1);
         }
 
         Application::~Application()
