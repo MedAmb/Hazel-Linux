@@ -46,13 +46,13 @@ all:libHazel.so
 # SHARED LIBRARY
 #==============================================
 libHazel.so:$(HAZELOBJS)
-	$(CC) -shared -o $(LIBOUTPUTDIR)/$@ intermediate/* $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel  -I $(THIRDPARTYINCDIR) $(DEBUGDEFINE)
+	$(CC) -shared -o $(LIBOUTPUTDIR)/$@ intermediate/* $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(INCDIR)/PCH  -I $(THIRDPARTYINCDIR) $(DEBUGDEFINE)
 
 #==============================================
 # OBJECT FILES
 #==============================================
 %.o:%.cpp
-	$(CC) -c $^ -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(THIRDPARTYINCDIR) $(DEBUGDEFINE)
+	$(CC) -c $^ -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(INCDIR)/PCH -I $(THIRDPARTYINCDIR) $(DEBUGDEFINE)
 
 #==============================================
 # PHONIES

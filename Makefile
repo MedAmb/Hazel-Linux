@@ -6,11 +6,11 @@ export
 # CONTROL VARIABLES
 #=============================================
 D = 1
-CI = 0
 #==============================================
 # DIRECTORY VARIABLES
 #==============================================
 unexport THISDIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
+PCHDIR = $(THISDIR)inc/PCH
 SRCDIR = $(THISDIR)src
 
 #==============================================
@@ -38,6 +38,9 @@ Application:
 	@echo "Building the Application"
 	$(MAKE) -C $(SRCDIR)/Application all
 
+PCH:
+	$(MAKE) -C $(PCHDIR) build
+
 install:
 	$(MAKE) -C $(SRCDIR)/ThirdParty install
 	$(MAKE) -C $(SRCDIR)/Hazel install
@@ -57,4 +60,5 @@ clobber:
 	$(MAKE) -C $(SRCDIR)/ThirdParty clobber
 	$(MAKE) -C $(SRCDIR)/Hazel clobber
 	$(MAKE) -C $(SRCDIR)/Application clobber
+	$(MAKE) -C $(PCHDIR) clean
 	-rm -rf logs

@@ -1,8 +1,6 @@
 #pragma once
 
-#include <string>
-#include <sstream>
-#include <iostream>
+#include "STLPCH.h"
 
 #include "Hazel/Core.h"
 

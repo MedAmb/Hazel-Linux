@@ -44,7 +44,7 @@ all:Sandbox.out
 # BINARY
 #==============================================
 Sandbox.out:$(SRC)
-	$(CC) -o $(BINOUTPUTDIR)/$@ $^ $(STDCFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/ThirdParty $(LDFLAGS)
+	$(CC) -o $(BINOUTPUTDIR)/$@ $^ $(STDCFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/PCH -I $(INCDIR)/ThirdParty $(LDFLAGS)
 
 #==============================================
 # PHONIES
