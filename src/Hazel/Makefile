@@ -31,8 +31,11 @@ LIBOUTPUTDIR = $(THISDIR)../../output/lib-release
 DEBUGDEFINE =
 endif
 
-
-HAZELOBJS = Application.o Log.o
+#==============================================
+# FILES
+#==============================================
+HAZELSRC = $(wildcard *.cpp)
+HAZELOBJS = $(HAZELSRC:.cpp=.o)
 
 #==============================================
 # TARGETS
@@ -48,11 +51,8 @@ libHazel.so:$(HAZELOBJS)
 #==============================================
 # OBJECT FILES
 #==============================================
-Application.o:
-	$(CC) -c Application.cpp -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(THIRDPARTYINCDIR) $(DEBUGDEFINE)
-
-Log.o:
-	$(CC) -c Log.cpp -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(THIRDPARTYINCDIR) $(DEBUGDEFINE)
+%.o:%.cpp
+	$(CC) -c $^ -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(THIRDPARTYINCDIR) $(DEBUGDEFINE)
 
 #==============================================
 # PHONIES

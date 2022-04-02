@@ -20,6 +20,7 @@ CC = g++
 STDCFLAGS = -std=c++11
 SHAREDLIBFFLAGS = -fPIC
 OPTIMAZATIONFLAGS = -g
+DEFINEFLAGS = -DSPDLOG_COMPILED_LIB
 
 #==============================================
 # CONDITIONAL ASSIGNEMENT
@@ -30,9 +31,11 @@ BINOUTPUTDIR = $(THISDIR)../../../output/bin-release
 LIBOUTPUTDIR = $(THISDIR)../../../output/lib-release
 endif
 
-
-SPDLOGOBJS = async.o  cfg.o color_sinks.o file_sinks.o fmt.o spdlog.o stdout_sink.o
-DEFINEFLAGS = -DSPDLOG_COMPILED_LIB
+#==============================================
+# FILES
+#==============================================
+SPDLOGSRC = $(wildcard *.cpp)
+SPDLOGOBJS = $(SPDLOGSRC:.cpp=.o)
 
 #==============================================
 # TARGETS
@@ -48,26 +51,8 @@ libspdlog.so:$(SPDLOGOBJS)
 #==============================================
 # OBJECT FILES
 #==============================================
-async.o:
-	$(CC) -c async.cpp -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(THIRDPARTYINCDIR) $(DEFINEFLAGS)
-
-cfg.o:
-	$(CC) -c cfg.cpp -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(THIRDPARTYINCDIR) $(DEFINEFLAGS)
-
-color_sinks.o:
-	$(CC) -c color_sinks.cpp -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(THIRDPARTYINCDIR) $(DEFINEFLAGS)
-
-file_sinks.o:
-	$(CC) -c file_sinks.cpp -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(THIRDPARTYINCDIR) $(DEFINEFLAGS)
-
-fmt.o:
-	$(CC) -c fmt.cpp -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(THIRDPARTYINCDIR) $(DEFINEFLAGS)
-
-spdlog.o:
-	$(CC) -c spdlog.cpp -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(THIRDPARTYINCDIR) $(DEFINEFLAGS)
-
-stdout_sink.o:
-	$(CC) -c stdout_sinks.cpp -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(THIRDPARTYINCDIR) $(DEFINEFLAGS)
+%.o:%.cpp
+	$(CC) -c $^ -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(THIRDPARTYINCDIR) $(DEFINEFLAGS)
 
 #==============================================
 # PHONIES

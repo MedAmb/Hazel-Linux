@@ -3,7 +3,7 @@
 class sandBox: public Hazel::Application
 {
     public:
-        sandBox()
+            sandBox()
         {
 
         }

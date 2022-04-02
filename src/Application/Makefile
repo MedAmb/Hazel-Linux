@@ -22,6 +22,11 @@ OPTIMAZATIONFLAGS = -g
 LDFLAGS = -lHazel -lspdlog -lpthread
 
 #==============================================
+# FILES
+#==============================================
+SRC = $(wildcard *.cpp)
+
+#==============================================
 # CONDITIONAL ASSIGNEMENT
 #==============================================
 ifeq ($(D), 0)
@@ -38,8 +43,8 @@ all:Sandbox.out
 #==============================================
 # BINARY
 #==============================================
-Sandbox.out:
-	$(CC) -o $(BINOUTPUTDIR)/$@ SandBox.cpp $(STDCFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/ThirdParty $(LDFLAGS)
+Sandbox.out:$(SRC)
+	$(CC) -o $(BINOUTPUTDIR)/$@ $^ $(STDCFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/ThirdParty $(LDFLAGS)
 
 #==============================================
 # PHONIES
