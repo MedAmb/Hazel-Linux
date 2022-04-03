@@ -19,8 +19,8 @@ CC = g++
 STDCFLAGS = -std=c++17
 SHAREDLIBFFLAGS = -fPIC
 OPTIMAZATIONFLAGS = -g
-LDFLAGS = -lHazel -lglfw  -lm
-DEBUGDEFINE = -DDEBUG
+LDFLAGS = -lglfw -lHazel -lm
+DEBUGDEFINE = -DDEBUG -DHZ_ENABLE_ASSERTION
 
 #==============================================
 # FILES
@@ -42,7 +42,7 @@ endif
 # TARGETS
 #==============================================
 build:$(OBJECTFILES)
-	$(CC) -o $(BINOUTPUTDIR)/Sandbox $(INTERMEDIATEDIR)/*.o $(STDCFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/PCH -I $(INCDIR)/ThirdParty $(LDFLAGS) $(DEBUGDEFINE)
+	$(CC) -o $(BINOUTPUTDIR)/Sandbox $(INTERMEDIATEDIR)/*.o $(STDCFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/PCH -I $(INCDIR)/ThirdParty  -I $(INCDIR)/ThirdParty/glfw $(LDFLAGS) $(DEBUGDEFINE)
 
 #==============================================
 # BINARY

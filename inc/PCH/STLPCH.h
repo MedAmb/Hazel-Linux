@@ -1,3 +1,5 @@
+#pragma once
+
 // IO
 #include  <iostream>
 
@@ -7,3 +9,6 @@
 
 // memory
 #include <memory>
+
+// function pointers
+#include <functional>

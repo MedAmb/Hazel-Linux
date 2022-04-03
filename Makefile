@@ -51,7 +51,6 @@ glfw-install:
 # TARGETS Hazel
 #==============================================
 Hazel: Hazel-build Hazel-install
-	$(MAKE) -C $(SRCDIR)/Hazel 
 
 Hazel-build:
 	$(MAKE) -C $(SRCDIR)/Hazel build

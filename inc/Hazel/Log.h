@@ -22,17 +22,17 @@ namespace Hazel
 }
 
 #ifdef DEBUG
-#define HZ_CORE_ERROR(format) ::Hazel::Log::getCoreLogger()->error(format);
-#define HZ_CORE_WARN(format) ::Hazel::Log::getCoreLogger()->warn(format);
-#define HZ_CORE_INFO(format) ::Hazel::Log::getCoreLogger()->info(format);
-#define HZ_APP_ERROR(format) ::Hazel::Log::getClientLogger()->error(format);
-#define HZ_APP_WARN(format) ::Hazel::Log::getClientLogger()->warn(format);
-#define HZ_APP_INFO(format) ::Hazel::Log::getClientLogger()->info(format);
+#define HZ_CORE_ERROR(...) ::Hazel::Log::getCoreLogger()->error(__VA_ARGS__ );
+#define HZ_CORE_WARN(...) ::Hazel::Log::getCoreLogger()->warn(__VA_ARGS__ );
+#define HZ_CORE_INFO(...) ::Hazel::Log::getCoreLogger()->info(__VA_ARGS__ );
+#define HZ_APP_ERROR(...) ::Hazel::Log::getClientLogger()->error(__VA_ARGS__ );
+#define HZ_APP_WARN(...) ::Hazel::Log::getClientLogger()->warn(__VA_ARGS__ );
+#define HZ_APP_INFO(...) ::Hazel::Log::getClientLogger()->info(__VA_ARGS__ );
 #else
-#define HZ_CORE_ERROR(format)
-#define HZ_CORE_WARN(format)
-#define HZ_CORE_INFO(format)
-#define HZ_APP_ERROR(format)
-#define HZ_APP_WARN(format)
-#define HZ_APP_INFO(format)
+#define HZ_CORE_ERROR(...)
+#define HZ_CORE_WARN(...)
+#define HZ_CORE_INFO(...)
+#define HZ_APP_ERROR(...)
+#define HZ_APP_WARN(...)
+#define HZ_APP_INFO(...)
 #endif

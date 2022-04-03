@@ -10,7 +10,7 @@ BINOUTPUTDIR = $(THISDIR)../../output/bin-debug
 LIBOUTPUTDIR = $(THISDIR)../../output/lib-debug
 INTERMEDIATEDIR =  $(THISDIR)intermediate
 INCDIR = $(THISDIR)../../inc
-DEBUGDEFINE = -DDEBUG
+DEBUGDEFINE = -DDEBUG -DHZ_ENABLE_ASSERTION
 
 #==============================================
 # COMPILATION FLAGS  VARIABLES
@@ -19,7 +19,7 @@ CC = g++
 STDCFLAGS = -std=c++17
 SHAREDLIBFFLAGS = -fPIC
 OPTIMAZATIONFLAGS = -g
-LDFLAGS = -lspdlog -lpthread
+LDFLAGS = -lspdlog -lpthread -lglfw
 
 #==============================================
 # CONDITIONAL ASSIGNEMENT
@@ -46,13 +46,13 @@ build:libHazel.so
 # SHARED LIBRARY
 #==============================================
 libHazel.so:$(HAZELOBJS)
-	$(CC) -shared -o $(LIBOUTPUTDIR)/$@ intermediate/* $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) $(LDFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(INCDIR)/PCH  -I $(INCDIR)/ThirdParty -I $(THIRDPARTYINCDIR) $(DEBUGDEFINE)
+	$(CC) -shared -o $(LIBOUTPUTDIR)/$@ intermediate/* $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) $(LDFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(INCDIR)/PCH  -I $(INCDIR)/ThirdParty -I $(INCDIR)/ThirdParty/glfw $(DEBUGDEFINE)
 
 #==============================================
 # OBJECT FILES
 #==============================================
 %.o:%.cpp
-	$(CC) -c $^ -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(INCDIR)/PCH -I $(INCDIR)/ThirdParty $(DEBUGDEFINE)
+	$(CC) -c $^ -o intermediate/$@ $(STDCFLAGS) $(SHAREDLIBFFLAGS) $(OPTIMAZATIONFLAGS) -I $(INCDIR) -I $(INCDIR)/Hazel -I $(INCDIR)/PCH -I $(INCDIR)/ThirdParty  -I $(INCDIR)/ThirdParty/glfw $(DEBUGDEFINE)
 
 #==============================================
 # PHONIES
